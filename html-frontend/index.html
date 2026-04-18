@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Digital Hostel Ecosystem</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f172a;
+      --navy-800: #1e293b;
+      --navy-700: #334155;
+      --navy-600: #475569;
+      --amber: #f59e0b;
+      --amber-light: #fcd34d;
+      --white: #f8fafc;
+      --muted: #94a3b8;
+      --border: #e2e8f0;
+      --card: #ffffff;
+      --radius: 0.75rem;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--navy);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: var(--navy);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 2rem;
+      height: 2rem;
+      background: var(--amber);
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .logo-text {
+      color: var(--white);
+      font-weight: 700;
+      font-size: 1.125rem;
+    }
+
+    /* Hero */
+    .hero {
+      background: var(--navy);
+      color: var(--white);
+      text-align: center;
+      padding: 5rem 1.5rem 4rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.15;
+      max-width: 48rem;
+      margin: 0 auto 1.25rem;
+    }
+
+    .hero h1 span { color: var(--amber); }
+
+    .hero p {
+      font-size: 1.125rem;
+      color: var(--muted);
+      max-width: 36rem;
+      margin: 0 auto 2.5rem;
+      line-height: 1.6;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.75rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      cursor: pointer;
+      text-decoration: none;
+      border: 2px solid transparent;
+      transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+    }
+
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: var(--amber);
+      color: var(--navy);
+      border-color: var(--amber);
+    }
+
+    .btn-primary:hover { background: var(--amber-light); border-color: var(--amber-light); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .btn-outline:hover { border-color: var(--white); }
+
+    .btn-navy {
+      background: var(--navy);
+      color: var(--white);
+      border-color: var(--navy);
+    }
+
+    .btn-navy:hover { background: var(--navy-800); }
+
+    /* Section */
+    .section { padding: 4rem 1.5rem; }
+    .section-title {
+      font-size: 1.625rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .section-sub {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      font-size: 1rem;
+    }
+
+    /* Portal Cards */
+    .portals {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .portal-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+    }
+
+    .portal-card:hover {
+      border-color: var(--amber);
+      box-shadow: 0 8px 24px rgba(15,23,42,0.1);
+      transform: translateY(-2px);
+    }
+
+    .portal-icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 0.75rem;
+      background: rgba(245,158,11,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .portal-card h2 {
+      font-size: 1.375rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .portal-card p {
+      color: var(--muted);
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+
+    .portal-list {
+      list-style: none;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .portal-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--navy-600);
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+      flex-shrink: 0;
+    }
+
+    .portal-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      cursor: pointer;
+      border: none;
+      transition: background 0.15s;
+    }
+
+    .portal-btn-primary {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .portal-btn-primary:hover { background: var(--navy-800); }
+
+    .portal-btn-secondary {
+      background: rgba(245,158,11,0.1);
+      color: var(--navy);
+    }
+
+    .portal-btn-secondary:hover { background: rgba(245,158,11,0.2); }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+    }
+
+    .feature-card h3 {
+      font-weight: 600;
+      font-size: 0.9375rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .feature-card p {
+      font-size: 0.8125rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      background: var(--amber);
+      padding: 1.25rem 1.5rem;
+    }
+
+    .stats-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-item { text-align: center; }
+    .stat-num { font-size: 1.75rem; font-weight: 800; color: var(--navy); line-height: 1; }
+    .stat-label { font-size: 0.8125rem; color: var(--navy-700); font-weight: 500; margin-top: 0.125rem; }
+
+    /* Footer */
+    footer {
+      background: var(--navy);
+      color: var(--muted);
+      text-align: center;
+      padding: 2rem 1.5rem;
+      font-size: 0.875rem;
+    }
+
+    footer p + p { margin-top: 0.25rem; }
+
+    /* Divider */
+    .divider { background: #f1f5f9; }
+
+    @media (max-width: 480px) {
+      header { padding: 1rem; }
+      .hero { padding: 3.5rem 1rem 3rem; }
+      .stats-inner { gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo">
+      <div class="logo-icon">H</div>
+      <span class="logo-text">Smart Digital Hostel</span>
+    </a>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Welcome to <span>Smart Digital</span> Hostel Ecosystem</h1>
+    <p>A comprehensive hostel management system designed to simplify room allocation, payments, meal management, and community interaction.</p>
+    <div class="hero-btns">
+      <a href="tenant-dashboard.html" class="btn btn-primary">
+        Enter Tenant Portal &#8594;
+      </a>
+      <a href="admin-dashboard.html" class="btn btn-outline">
+        Admin Portal &#8594;
+      </a>
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="stat-num">7</div>
+        <div class="stat-label">Total Rooms</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Active Tenants</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">৳30,500</div>
+        <div class="stat-label">Revenue Collected</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">7</div>
+        <div class="stat-label">Weekly Menus</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Portal Selection -->
+  <section class="section divider">
+    <h2 class="section-title">Choose Your Portal</h2>
+    <p class="section-sub">Select the portal that matches your role in the hostel</p>
+
+    <div class="portals">
+      <!-- Tenant Portal -->
+      <div class="portal-card">
+        <div class="portal-icon">&#128100;</div>
+        <h2>Tenant Portal</h2>
+        <p>Access your room details, pay rent, check meal menus, and connect with the hostel community.</p>
+        <ul class="portal-list">
+          <li><span class="dot"></span> View room and rent information</li>
+          <li><span class="dot"></span> Make payments via bKash, Nagad, Rocket</li>
+          <li><span class="dot"></span> Check daily meal menus and buy tokens</li>
+          <li><span class="dot"></span> Submit complaints and join discussions</li>
+        </ul>
+        <a href="tenant-dashboard.html" class="portal-btn portal-btn-primary">
+          Enter Tenant Portal &#8594;
+        </a>
+      </div>
+
+      <!-- Admin Portal -->
+      <div class="portal-card">
+        <div class="portal-icon">&#128737;</div>
+        <h2>Admin Portal</h2>
+        <p>Manage users, rooms, finances, meals, and handle tenant complaints efficiently.</p>
+        <ul class="portal-list">
+          <li><span class="dot"></span> User verification and role management</li>
+          <li><span class="dot"></span> Room allocation and availability tracking</li>
+          <li><span class="dot"></span> Financial reports and transaction history</li>
+          <li><span class="dot"></span> Meal setup and complaint management</li>
+        </ul>
+        <a href="admin-dashboard.html" class="portal-btn portal-btn-secondary">
+          Enter Admin Portal &#8594;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section">
+    <h2 class="section-title">System Features</h2>
+    <p class="section-sub">Everything you need to run a modern hostel</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <h3>Room Management</h3>
+        <p>Floors, room types, and smart allocation with occupancy tracking</p>
+      </div>
+      <div class="feature-card">
+        <h3>Payment Gateway</h3>
+        <p>bKash, Nagad, Rocket, Online &amp; Offline payment support</p>
+      </div>
+      <div class="feature-card">
+        <h3>Meal System</h3>
+        <p>Daily menus, weekly schedules, and meal token management</p>
+      </div>
+      <div class="feature-card">
+        <h3>Complaint Handling</h3>
+        <p>Submit, track, and resolve tenant issues with admin responses</p>
+      </div>
+      <div class="feature-card">
+        <h3>Community Board</h3>
+        <p>Discussions, announcements, and community interaction</p>
+      </div>
+      <div class="feature-card">
+        <h3>Financial Reports</h3>
+        <p>Track credits, debits, rent history, and payment requests</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2024 Smart Digital Hostel Ecosystem. All rights reserved.</p>
+    <p>Frontend Demo &mdash; No backend required</p>
+  </footer>
+
+</body>
+</html>
