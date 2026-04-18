@@ -21,7 +21,6 @@ import {
   Building2,
   Shield,
   UserCheck,
-  UserX,
   Edit,
   Trash2,
   Eye

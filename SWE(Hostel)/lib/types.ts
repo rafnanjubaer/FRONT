@@ -11,6 +11,9 @@ export enum PaymentMethod {
   ROCKET = "ROCKET",
   ONLINE = "ONLINE",
   OFFLINE = "OFFLINE",
+  UPI = "UPI",
+  BANK_TRANSFER = "BANK_TRANSFER",
+  CASH = "CASH",
 }
 
 export enum DayOfWeek {
@@ -54,6 +57,18 @@ export enum RoomStatus {
   MAINTENANCE = "MAINTENANCE",
 }
 
+export enum RentStatus {
+  PAID = "PAID",
+  PENDING = "PENDING",
+  OVERDUE = "OVERDUE",
+}
+
+export enum PaymentRequestStatus {
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+}
+
 // Interfaces
 
 export interface User {
@@ -63,9 +78,11 @@ export interface User {
   phone: string;
   role: UserRole;
   isVerified: boolean;
+  isActive: boolean;
   avatarUrl?: string;
   createdAt: string;
   roomId?: string;
+  walletBalance: number;
 }
 
 export interface Floor {
@@ -80,9 +97,12 @@ export interface Room {
   roomNumber: string;
   floorId: string;
   floorName: string;
+  floor: number;
   roomType: RoomType;
+  type: RoomType;
   capacity: number;
   occupancy: number;
+  currentOccupancy: number;
   rentAmount: number;
   status: RoomStatus;
   amenities: string[];
@@ -95,6 +115,7 @@ export interface RoomAllocation {
   userName: string;
   roomNumber: string;
   allocatedAt: string;
+  startDate: string;
   isActive: boolean;
 }
 
@@ -107,6 +128,9 @@ export interface RentHistory {
   year: number;
   isPaid: boolean;
   paidAt?: string;
+  paidDate?: string;
+  dueDate: string;
+  status: RentStatus;
   paymentMethod?: PaymentMethod;
 }
 
@@ -150,6 +174,7 @@ export interface MealToken {
   date: string;
   isUsed: boolean;
   purchasedAt: string;
+  usedAt?: string;
   price: number;
 }
 
@@ -159,6 +184,7 @@ export interface Complaint {
   userName: string;
   title: string;
   description: string;
+  category: string;
   status: ComplaintStatus;
   createdAt: string;
   updatedAt: string;
@@ -168,12 +194,15 @@ export interface Complaint {
 export interface DiscussionPost {
   id: string;
   userId: string;
+  authorId: string;
   userName: string;
   userAvatar?: string;
   content: string;
   createdAt: string;
   likes: number;
+  isPinned: boolean;
   replies: DiscussionReply[];
+  comments: DiscussionReply[];
 }
 
 export interface DiscussionReply {
@@ -188,10 +217,35 @@ export interface DiscussionReply {
 export interface PaymentRequest {
   id: string;
   userId: string;
+  requesterId: string;
   userName: string;
   amount: number;
   description: string;
   dueDate: string;
   isPaid: boolean;
+  status: PaymentRequestStatus;
+  paymentMethod: PaymentMethod;
+  transactionReference?: string;
+  adminNotes?: string;
   createdAt: string;
+}
+
+export interface Meal {
+  type: MealType;
+  mainCourse: string;
+  sideDish?: string;
+  dessert?: string;
+}
+
+export interface DashboardStats {
+  totalRevenue: number;
+  pendingRent: number;
+  overdueAmount: number;
+  totalUsers: number;
+  verifiedUsers: number;
+  totalRooms: number;
+  occupiedRooms: number;
+  availableRooms: number;
+  pendingComplaints: number;
+  totalExpenses: number;
 }

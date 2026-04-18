@@ -19,7 +19,6 @@ import {
   Plus,
   Clock,
   CheckCircle2,
-  XCircle,
   Building,
   Smartphone,
   Banknote,
@@ -27,12 +26,10 @@ import {
   Send,
   TrendingUp
 } from "lucide-react"
-import { mockUsers, mockTransactions, mockPaymentRequests } from "@/lib/mock-data"
+import { currentUser, mockTransactions, mockPaymentRequests } from "@/lib/mock-data"
 import { formatCurrency, formatDate } from "@/lib/utils"
 import { TransactionType, PaymentMethod, PaymentRequestStatus } from "@/lib/types"
 
-// Current tenant (mock - would come from auth)
-const currentUser = mockUsers.find(u => u.id === "user-1")!
 const userTransactions = mockTransactions.filter(t => t.userId === currentUser.id)
 const userPaymentRequests = mockPaymentRequests.filter(p => p.requesterId === currentUser.id)
 
@@ -195,28 +192,36 @@ export default function PaymentsPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {userTransactions.map((transaction) => (
-                    <TableRow key={transaction.id}>
-                      <TableCell>{formatDate(transaction.createdAt)}</TableCell>
-                      <TableCell className="font-medium">{transaction.description}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          {transaction.type === TransactionType.CREDIT ? (
-                            <ArrowDownLeft className="h-4 w-4 text-emerald-600" />
-                          ) : (
-                            <ArrowUpRight className="h-4 w-4 text-rose-600" />
-                          )}
-                          <span className="capitalize">{transaction.type.toLowerCase()}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell className={`text-right font-medium ${
-                        transaction.type === TransactionType.CREDIT ? "text-emerald-600" : "text-rose-600"
-                      }`}>
-                        {transaction.type === TransactionType.CREDIT ? "+" : "-"}
-                        {formatCurrency(transaction.amount)}
+                  {userTransactions.length > 0 ? (
+                    userTransactions.map((transaction) => (
+                      <TableRow key={transaction.id}>
+                        <TableCell>{formatDate(transaction.createdAt)}</TableCell>
+                        <TableCell className="font-medium">{transaction.description}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            {transaction.type === TransactionType.CREDIT ? (
+                              <ArrowDownLeft className="h-4 w-4 text-emerald-600" />
+                            ) : (
+                              <ArrowUpRight className="h-4 w-4 text-rose-600" />
+                            )}
+                            <span className="capitalize">{transaction.type.toLowerCase()}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell className={`text-right font-medium ${
+                          transaction.type === TransactionType.CREDIT ? "text-emerald-600" : "text-rose-600"
+                        }`}>
+                          {transaction.type === TransactionType.CREDIT ? "+" : "-"}
+                          {formatCurrency(transaction.amount)}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
+                        No transactions yet
                       </TableCell>
                     </TableRow>
-                  ))}
+                  )}
                 </TableBody>
               </Table>
             </CardContent>

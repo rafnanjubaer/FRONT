@@ -10,7 +10,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
 import { 
   UtensilsCrossed, 
   Plus, 
@@ -27,7 +26,7 @@ import {
 } from "lucide-react"
 import { mockDailyMenus, mockMealTokens, mockUsers } from "@/lib/mock-data"
 import { formatDate } from "@/lib/utils"
-import { MealType, DayOfWeek } from "@/lib/types"
+import { MealType, DayOfWeek, UserRole } from "@/lib/types"
 
 const getMealIcon = (type: MealType) => {
   switch (type) {
@@ -219,7 +218,7 @@ export default function MealsPage() {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Active Subscribers</p>
-                <p className="text-xl font-bold">{mockUsers.filter(u => u.role === "TENANT").length}</p>
+                <p className="text-xl font-bold">{mockUsers.filter(u => u.role === UserRole.TENANT).length}</p>
               </div>
             </div>
           </CardContent>

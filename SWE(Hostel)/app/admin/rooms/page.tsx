@@ -18,18 +18,16 @@ import {
   MoreHorizontal,
   Bed,
   Users,
-  DollarSign,
   Edit,
   Trash2,
   Eye,
   UserPlus,
   CheckCircle2,
-  XCircle,
   Wrench
 } from "lucide-react"
 import { mockRooms, mockRoomAllocations, mockUsers } from "@/lib/mock-data"
 import { formatCurrency } from "@/lib/utils"
-import { RoomStatus, RoomType, UserRole } from "@/lib/types"
+import { RoomStatus } from "@/lib/types"
 
 export default function RoomsPage() {
   const [searchQuery, setSearchQuery] = useState("")

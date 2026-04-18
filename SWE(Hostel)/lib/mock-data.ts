@@ -7,6 +7,7 @@ import {
   RoomStatus,
   RoomAllocation,
   RentHistory,
+  RentStatus,
   Transaction,
   TransactionType,
   PaymentMethod,
@@ -19,6 +20,9 @@ import {
   ComplaintStatus,
   DiscussionPost,
   PaymentRequest,
+  PaymentRequestStatus,
+  Meal,
+  DashboardStats,
 } from "./types";
 
 // Current logged in user (for demo purposes)
@@ -29,9 +33,11 @@ export const currentUser: User = {
   phone: "+880 1712-345678",
   role: UserRole.TENANT,
   isVerified: true,
+  isActive: true,
   avatarUrl: "/placeholder-user.jpg",
   createdAt: "2024-01-15T10:00:00Z",
   roomId: "room-101",
+  walletBalance: 5000,
 };
 
 // Mock Users
@@ -44,9 +50,11 @@ export const mockUsers: User[] = [
     phone: "+880 1812-456789",
     role: UserRole.TENANT,
     isVerified: true,
+    isActive: true,
     avatarUrl: "/placeholder-user.jpg",
     createdAt: "2024-02-10T09:30:00Z",
     roomId: "room-102",
+    walletBalance: 3500,
   },
   {
     id: "user-003",
@@ -55,7 +63,9 @@ export const mockUsers: User[] = [
     phone: "+880 1912-567890",
     role: UserRole.TENANT,
     isVerified: false,
+    isActive: true,
     createdAt: "2024-03-05T14:20:00Z",
+    walletBalance: 0,
   },
   {
     id: "user-004",
@@ -64,9 +74,11 @@ export const mockUsers: User[] = [
     phone: "+880 1612-678901",
     role: UserRole.TENANT,
     isVerified: true,
+    isActive: true,
     avatarUrl: "/placeholder-user.jpg",
     createdAt: "2024-01-20T11:45:00Z",
     roomId: "room-201",
+    walletBalance: 6000,
   },
   {
     id: "user-005",
@@ -75,8 +87,10 @@ export const mockUsers: User[] = [
     phone: "+880 1512-789012",
     role: UserRole.TENANT,
     isVerified: true,
+    isActive: true,
     createdAt: "2024-02-28T16:00:00Z",
     roomId: "room-202",
+    walletBalance: 2000,
   },
   {
     id: "admin-001",
@@ -85,8 +99,10 @@ export const mockUsers: User[] = [
     phone: "+880 1712-111222",
     role: UserRole.ADMIN,
     isVerified: true,
+    isActive: true,
     avatarUrl: "/placeholder-user.jpg",
     createdAt: "2023-06-01T08:00:00Z",
+    walletBalance: 0,
   },
   {
     id: "admin-002",
@@ -95,7 +111,9 @@ export const mockUsers: User[] = [
     phone: "+880 1812-222333",
     role: UserRole.ADMIN,
     isVerified: true,
+    isActive: true,
     createdAt: "2023-08-15T09:00:00Z",
+    walletBalance: 0,
   },
 ];
 
@@ -114,9 +132,12 @@ export const mockRooms: Room[] = [
     roomNumber: "101",
     floorId: "floor-2",
     floorName: "First Floor",
+    floor: 1,
     roomType: RoomType.SINGLE,
+    type: RoomType.SINGLE,
     capacity: 1,
     occupancy: 1,
+    currentOccupancy: 1,
     rentAmount: 8000,
     status: RoomStatus.OCCUPIED,
     amenities: ["WiFi", "AC", "Attached Bathroom"],
@@ -126,9 +147,12 @@ export const mockRooms: Room[] = [
     roomNumber: "102",
     floorId: "floor-2",
     floorName: "First Floor",
+    floor: 1,
     roomType: RoomType.SINGLE,
+    type: RoomType.SINGLE,
     capacity: 1,
     occupancy: 1,
+    currentOccupancy: 1,
     rentAmount: 8000,
     status: RoomStatus.OCCUPIED,
     amenities: ["WiFi", "AC", "Attached Bathroom"],
@@ -138,9 +162,12 @@ export const mockRooms: Room[] = [
     roomNumber: "103",
     floorId: "floor-2",
     floorName: "First Floor",
+    floor: 1,
     roomType: RoomType.DOUBLE,
+    type: RoomType.DOUBLE,
     capacity: 2,
     occupancy: 0,
+    currentOccupancy: 0,
     rentAmount: 6000,
     status: RoomStatus.AVAILABLE,
     amenities: ["WiFi", "Fan", "Shared Bathroom"],
@@ -150,9 +177,12 @@ export const mockRooms: Room[] = [
     roomNumber: "201",
     floorId: "floor-3",
     floorName: "Second Floor",
+    floor: 2,
     roomType: RoomType.DOUBLE,
+    type: RoomType.DOUBLE,
     capacity: 2,
     occupancy: 1,
+    currentOccupancy: 1,
     rentAmount: 6000,
     status: RoomStatus.OCCUPIED,
     amenities: ["WiFi", "Fan", "Attached Bathroom"],
@@ -162,9 +192,12 @@ export const mockRooms: Room[] = [
     roomNumber: "202",
     floorId: "floor-3",
     floorName: "Second Floor",
+    floor: 2,
     roomType: RoomType.TRIPLE,
+    type: RoomType.TRIPLE,
     capacity: 3,
     occupancy: 1,
+    currentOccupancy: 1,
     rentAmount: 5000,
     status: RoomStatus.OCCUPIED,
     amenities: ["WiFi", "Fan", "Shared Bathroom"],
@@ -174,9 +207,12 @@ export const mockRooms: Room[] = [
     roomNumber: "301",
     floorId: "floor-4",
     floorName: "Third Floor",
+    floor: 3,
     roomType: RoomType.DORMITORY,
+    type: RoomType.DORMITORY,
     capacity: 6,
     occupancy: 4,
+    currentOccupancy: 4,
     rentAmount: 3500,
     status: RoomStatus.OCCUPIED,
     amenities: ["WiFi", "Fan", "Shared Bathroom", "Locker"],
@@ -186,9 +222,12 @@ export const mockRooms: Room[] = [
     roomNumber: "302",
     floorId: "floor-4",
     floorName: "Third Floor",
+    floor: 3,
     roomType: RoomType.DORMITORY,
+    type: RoomType.DORMITORY,
     capacity: 6,
     occupancy: 0,
+    currentOccupancy: 0,
     rentAmount: 3500,
     status: RoomStatus.MAINTENANCE,
     amenities: ["WiFi", "Fan", "Shared Bathroom", "Locker"],
@@ -204,6 +243,7 @@ export const mockRoomAllocations: RoomAllocation[] = [
     userName: "Rahim Ahmed",
     roomNumber: "101",
     allocatedAt: "2024-01-15T10:00:00Z",
+    startDate: "2024-01-15T10:00:00Z",
     isActive: true,
   },
   {
@@ -213,6 +253,7 @@ export const mockRoomAllocations: RoomAllocation[] = [
     userName: "Karim Hassan",
     roomNumber: "102",
     allocatedAt: "2024-02-10T09:30:00Z",
+    startDate: "2024-02-10T09:30:00Z",
     isActive: true,
   },
   {
@@ -222,6 +263,7 @@ export const mockRoomAllocations: RoomAllocation[] = [
     userName: "Abdul Jabbar",
     roomNumber: "201",
     allocatedAt: "2024-01-20T11:45:00Z",
+    startDate: "2024-01-20T11:45:00Z",
     isActive: true,
   },
   {
@@ -231,6 +273,7 @@ export const mockRoomAllocations: RoomAllocation[] = [
     userName: "Nusrat Jahan",
     roomNumber: "202",
     allocatedAt: "2024-02-28T16:00:00Z",
+    startDate: "2024-02-28T16:00:00Z",
     isActive: true,
   },
 ];
@@ -242,10 +285,13 @@ export const mockRentHistory: RentHistory[] = [
     userId: "user-001",
     roomId: "room-101",
     amount: 8000,
-    month: "January",
+    month: "January 2024",
     year: 2024,
     isPaid: true,
     paidAt: "2024-01-05T10:00:00Z",
+    paidDate: "2024-01-05T10:00:00Z",
+    dueDate: "2024-01-05T00:00:00Z",
+    status: RentStatus.PAID,
     paymentMethod: PaymentMethod.BKASH,
   },
   {
@@ -253,10 +299,13 @@ export const mockRentHistory: RentHistory[] = [
     userId: "user-001",
     roomId: "room-101",
     amount: 8000,
-    month: "February",
+    month: "February 2024",
     year: 2024,
     isPaid: true,
     paidAt: "2024-02-03T14:30:00Z",
+    paidDate: "2024-02-03T14:30:00Z",
+    dueDate: "2024-02-05T00:00:00Z",
+    status: RentStatus.PAID,
     paymentMethod: PaymentMethod.NAGAD,
   },
   {
@@ -264,10 +313,13 @@ export const mockRentHistory: RentHistory[] = [
     userId: "user-001",
     roomId: "room-101",
     amount: 8000,
-    month: "March",
+    month: "March 2024",
     year: 2024,
     isPaid: true,
     paidAt: "2024-03-07T09:15:00Z",
+    paidDate: "2024-03-07T09:15:00Z",
+    dueDate: "2024-03-05T00:00:00Z",
+    status: RentStatus.PAID,
     paymentMethod: PaymentMethod.ONLINE,
   },
   {
@@ -275,9 +327,22 @@ export const mockRentHistory: RentHistory[] = [
     userId: "user-001",
     roomId: "room-101",
     amount: 8000,
-    month: "April",
+    month: "April 2024",
     year: 2024,
     isPaid: false,
+    dueDate: "2024-04-05T00:00:00Z",
+    status: RentStatus.PENDING,
+  },
+  {
+    id: "rent-005",
+    userId: "user-002",
+    roomId: "room-102",
+    amount: 8000,
+    month: "April 2024",
+    year: 2024,
+    isPaid: false,
+    dueDate: "2024-04-05T00:00:00Z",
+    status: RentStatus.OVERDUE,
   },
 ];
 
@@ -358,10 +423,18 @@ export const mockMealTimings: MealTiming[] = [
   { id: "timing-3", mealType: MealType.DINNER, startTime: "19:00", endTime: "21:00" },
 ];
 
-// Mock Daily Menus
-export const mockDailyMenus: DailyMenu[] = [
+// Helper function to create a meal
+const createMeal = (type: MealType, mainCourse: string, sideDish?: string, dessert?: string): Meal => ({
+  type,
+  mainCourse,
+  sideDish,
+  dessert,
+});
+
+// Mock Daily Menus with correct structure for pages
+export const mockDailyMenus: (DailyMenu & { meals: Meal[] })[] = [
   {
-    id: "menu-sun-breakfast",
+    id: "menu-sun",
     dayOfWeek: DayOfWeek.SUNDAY,
     mealType: MealType.BREAKFAST,
     items: [
@@ -369,33 +442,15 @@ export const mockDailyMenus: DailyMenu[] = [
       { id: "item-2", name: "Egg Curry", description: "Spiced egg curry" },
       { id: "item-3", name: "Tea", description: "Hot milk tea" },
     ],
-    isActive: true,
-  },
-  {
-    id: "menu-sun-lunch",
-    dayOfWeek: DayOfWeek.SUNDAY,
-    mealType: MealType.LUNCH,
-    items: [
-      { id: "item-4", name: "Rice", description: "Steamed basmati rice" },
-      { id: "item-5", name: "Chicken Curry", description: "Traditional chicken curry" },
-      { id: "item-6", name: "Dal", description: "Yellow lentil soup" },
-      { id: "item-7", name: "Salad", description: "Fresh vegetable salad" },
+    meals: [
+      createMeal(MealType.BREAKFAST, "Paratha with Egg Curry", "Chutney"),
+      createMeal(MealType.LUNCH, "Rice with Chicken Curry", "Dal & Salad"),
+      createMeal(MealType.DINNER, "Rice with Fish Curry", "Mixed Vegetables"),
     ],
     isActive: true,
   },
   {
-    id: "menu-sun-dinner",
-    dayOfWeek: DayOfWeek.SUNDAY,
-    mealType: MealType.DINNER,
-    items: [
-      { id: "item-8", name: "Rice", description: "Steamed basmati rice" },
-      { id: "item-9", name: "Fish Curry", description: "Bengali style fish curry" },
-      { id: "item-10", name: "Vegetables", description: "Mixed vegetable stir fry" },
-    ],
-    isActive: true,
-  },
-  {
-    id: "menu-mon-breakfast",
+    id: "menu-mon",
     dayOfWeek: DayOfWeek.MONDAY,
     mealType: MealType.BREAKFAST,
     items: [
@@ -403,33 +458,15 @@ export const mockDailyMenus: DailyMenu[] = [
       { id: "item-12", name: "Omelette", description: "Vegetable omelette" },
       { id: "item-13", name: "Banana", description: "Fresh banana" },
     ],
-    isActive: true,
-  },
-  {
-    id: "menu-mon-lunch",
-    dayOfWeek: DayOfWeek.MONDAY,
-    mealType: MealType.LUNCH,
-    items: [
-      { id: "item-14", name: "Rice", description: "Steamed basmati rice" },
-      { id: "item-15", name: "Beef Bhuna", description: "Slow-cooked spiced beef" },
-      { id: "item-16", name: "Dal", description: "Red lentil soup" },
+    meals: [
+      createMeal(MealType.BREAKFAST, "Toast with Omelette", "Fresh Fruit"),
+      createMeal(MealType.LUNCH, "Rice with Beef Bhuna", "Red Lentil Soup"),
+      createMeal(MealType.DINNER, "Khichuri", "Egg Bhaji", "Pickle"),
     ],
     isActive: true,
   },
   {
-    id: "menu-mon-dinner",
-    dayOfWeek: DayOfWeek.MONDAY,
-    mealType: MealType.DINNER,
-    items: [
-      { id: "item-17", name: "Khichuri", description: "Rice and lentil porridge" },
-      { id: "item-18", name: "Egg Bhaji", description: "Spiced scrambled eggs" },
-      { id: "item-19", name: "Pickle", description: "Mango pickle" },
-    ],
-    isActive: true,
-  },
-  // Add more days as needed...
-  {
-    id: "menu-tue-breakfast",
+    id: "menu-tue",
     dayOfWeek: DayOfWeek.TUESDAY,
     mealType: MealType.BREAKFAST,
     items: [
@@ -437,16 +474,70 @@ export const mockDailyMenus: DailyMenu[] = [
       { id: "item-21", name: "Halwa", description: "Semolina pudding" },
       { id: "item-22", name: "Tea", description: "Hot milk tea" },
     ],
+    meals: [
+      createMeal(MealType.BREAKFAST, "Puri with Halwa", "Tea"),
+      createMeal(MealType.LUNCH, "Chicken Biryani", "Raita", "Salad"),
+      createMeal(MealType.DINNER, "Chapati with Paneer", "Dal Fry"),
+    ],
     isActive: true,
   },
   {
-    id: "menu-tue-lunch",
-    dayOfWeek: DayOfWeek.TUESDAY,
-    mealType: MealType.LUNCH,
+    id: "menu-wed",
+    dayOfWeek: DayOfWeek.WEDNESDAY,
+    mealType: MealType.BREAKFAST,
     items: [
-      { id: "item-23", name: "Biryani", description: "Aromatic spiced rice with chicken" },
-      { id: "item-24", name: "Raita", description: "Yogurt with cucumber" },
-      { id: "item-25", name: "Salad", description: "Fresh vegetable salad" },
+      { id: "item-30", name: "Idli", description: "Steamed rice cakes" },
+      { id: "item-31", name: "Sambar", description: "Lentil vegetable stew" },
+    ],
+    meals: [
+      createMeal(MealType.BREAKFAST, "Idli Sambar", "Coconut Chutney"),
+      createMeal(MealType.LUNCH, "Rice with Mutton Curry", "Vegetable Side"),
+      createMeal(MealType.DINNER, "Fried Rice", "Manchurian"),
+    ],
+    isActive: true,
+  },
+  {
+    id: "menu-thu",
+    dayOfWeek: DayOfWeek.THURSDAY,
+    mealType: MealType.BREAKFAST,
+    items: [
+      { id: "item-40", name: "Dosa", description: "Crispy rice crepe" },
+      { id: "item-41", name: "Chutney", description: "Coconut chutney" },
+    ],
+    meals: [
+      createMeal(MealType.BREAKFAST, "Masala Dosa", "Sambar & Chutney"),
+      createMeal(MealType.LUNCH, "Rice with Fish Fry", "Dal & Salad"),
+      createMeal(MealType.DINNER, "Roti with Chicken", "Mixed Vegetables"),
+    ],
+    isActive: true,
+  },
+  {
+    id: "menu-fri",
+    dayOfWeek: DayOfWeek.FRIDAY,
+    mealType: MealType.BREAKFAST,
+    items: [
+      { id: "item-50", name: "Luchi", description: "Deep fried flatbread" },
+      { id: "item-51", name: "Chole", description: "Chickpea curry" },
+    ],
+    meals: [
+      createMeal(MealType.BREAKFAST, "Luchi with Chole", "Pickle"),
+      createMeal(MealType.LUNCH, "Special Biryani", "Raita", "Sweet"),
+      createMeal(MealType.DINNER, "Pulao with Korma", "Salad"),
+    ],
+    isActive: true,
+  },
+  {
+    id: "menu-sat",
+    dayOfWeek: DayOfWeek.SATURDAY,
+    mealType: MealType.BREAKFAST,
+    items: [
+      { id: "item-60", name: "Pancakes", description: "Fluffy pancakes" },
+      { id: "item-61", name: "Honey", description: "Natural honey" },
+    ],
+    meals: [
+      createMeal(MealType.BREAKFAST, "Pancakes with Honey", "Fresh Juice"),
+      createMeal(MealType.LUNCH, "Rice with Prawn Curry", "Vegetables"),
+      createMeal(MealType.DINNER, "Naan with Butter Chicken", "Dal Makhani", "Gulab Jamun"),
     ],
     isActive: true,
   },
@@ -461,6 +552,7 @@ export const mockMealTokens: MealToken[] = [
     date: "2024-03-15",
     isUsed: true,
     purchasedAt: "2024-03-01T08:00:00Z",
+    usedAt: "2024-03-15T07:30:00Z",
     price: 50,
   },
   {
@@ -470,6 +562,7 @@ export const mockMealTokens: MealToken[] = [
     date: "2024-03-15",
     isUsed: true,
     purchasedAt: "2024-03-01T08:00:00Z",
+    usedAt: "2024-03-15T12:45:00Z",
     price: 80,
   },
   {
@@ -499,6 +592,25 @@ export const mockMealTokens: MealToken[] = [
     purchasedAt: "2024-03-01T08:00:00Z",
     price: 80,
   },
+  {
+    id: "token-006",
+    userId: "user-002",
+    mealType: MealType.BREAKFAST,
+    date: "2024-03-15",
+    isUsed: true,
+    purchasedAt: "2024-03-01T09:00:00Z",
+    usedAt: "2024-03-15T08:00:00Z",
+    price: 50,
+  },
+  {
+    id: "token-007",
+    userId: "user-002",
+    mealType: MealType.LUNCH,
+    date: "2024-03-15",
+    isUsed: false,
+    purchasedAt: "2024-03-01T09:00:00Z",
+    price: 80,
+  },
 ];
 
 // Mock Complaints
@@ -509,6 +621,7 @@ export const mockComplaints: Complaint[] = [
     userName: "Rahim Ahmed",
     title: "AC Not Working",
     description: "The air conditioner in Room 101 has stopped working since yesterday. It makes a strange noise but doesn't cool the room.",
+    category: "Maintenance",
     status: ComplaintStatus.IN_PROGRESS,
     createdAt: "2024-03-10T14:30:00Z",
     updatedAt: "2024-03-11T09:00:00Z",
@@ -520,6 +633,7 @@ export const mockComplaints: Complaint[] = [
     userName: "Karim Hassan",
     title: "WiFi Connectivity Issues",
     description: "The WiFi signal is very weak in Room 102. I cannot attend my online classes properly.",
+    category: "Facilities",
     status: ComplaintStatus.PENDING,
     createdAt: "2024-03-12T10:15:00Z",
     updatedAt: "2024-03-12T10:15:00Z",
@@ -530,6 +644,7 @@ export const mockComplaints: Complaint[] = [
     userName: "Abdul Jabbar",
     title: "Water Leakage in Bathroom",
     description: "There is a water leakage from the ceiling of the bathroom in Room 201. It gets worse when someone uses the bathroom above.",
+    category: "Maintenance",
     status: ComplaintStatus.RESOLVED,
     createdAt: "2024-03-05T08:45:00Z",
     updatedAt: "2024-03-08T16:30:00Z",
@@ -541,10 +656,22 @@ export const mockComplaints: Complaint[] = [
     userName: "Nusrat Jahan",
     title: "Noisy Neighbors",
     description: "The residents in the adjacent room play loud music late at night, disturbing my sleep.",
+    category: "Noise",
     status: ComplaintStatus.REJECTED,
     createdAt: "2024-03-01T22:00:00Z",
     updatedAt: "2024-03-03T10:00:00Z",
     adminResponse: "We have spoken to the residents and they have agreed to keep the volume down after 10 PM.",
+  },
+  {
+    id: "complaint-005",
+    userId: "user-001",
+    userName: "Rahim Ahmed",
+    title: "Food Quality Issue",
+    description: "The lunch served yesterday was not fresh. Several residents felt sick after eating.",
+    category: "Food Quality",
+    status: ComplaintStatus.PENDING,
+    createdAt: "2024-03-14T16:00:00Z",
+    updatedAt: "2024-03-14T16:00:00Z",
   },
 ];
 
@@ -553,12 +680,31 @@ export const mockDiscussionPosts: DiscussionPost[] = [
   {
     id: "post-001",
     userId: "user-001",
+    authorId: "user-001",
     userName: "Rahim Ahmed",
     userAvatar: "/placeholder-user.jpg",
     content: "Is anyone interested in forming a study group for the upcoming exams? We could use the common room on the ground floor.",
     createdAt: "2024-03-14T18:30:00Z",
     likes: 5,
+    isPinned: false,
     replies: [
+      {
+        id: "reply-001",
+        userId: "user-002",
+        userName: "Karim Hassan",
+        userAvatar: "/placeholder-user.jpg",
+        content: "I'm interested! What subjects are you focusing on?",
+        createdAt: "2024-03-14T19:00:00Z",
+      },
+      {
+        id: "reply-002",
+        userId: "user-004",
+        userName: "Abdul Jabbar",
+        content: "Count me in too. How about we meet this Saturday at 4 PM?",
+        createdAt: "2024-03-14T19:30:00Z",
+      },
+    ],
+    comments: [
       {
         id: "reply-001",
         userId: "user-002",
@@ -579,11 +725,23 @@ export const mockDiscussionPosts: DiscussionPost[] = [
   {
     id: "post-002",
     userId: "user-005",
+    authorId: "user-005",
     userName: "Nusrat Jahan",
-    content: "The new meal menu for this week looks great! Really appreciate the variety. Thank you to the kitchen staff! 👏",
+    content: "The new meal menu for this week looks great! Really appreciate the variety. Thank you to the kitchen staff!",
     createdAt: "2024-03-13T12:15:00Z",
     likes: 12,
+    isPinned: true,
     replies: [
+      {
+        id: "reply-003",
+        userId: "user-001",
+        userName: "Rahim Ahmed",
+        userAvatar: "/placeholder-user.jpg",
+        content: "Agreed! The biryani on Tuesday was amazing!",
+        createdAt: "2024-03-13T13:00:00Z",
+      },
+    ],
+    comments: [
       {
         id: "reply-003",
         userId: "user-001",
@@ -597,12 +755,15 @@ export const mockDiscussionPosts: DiscussionPost[] = [
   {
     id: "post-003",
     userId: "user-002",
+    authorId: "user-002",
     userName: "Karim Hassan",
     userAvatar: "/placeholder-user.jpg",
     content: "Has anyone seen my blue umbrella? I think I left it in the common room yesterday evening.",
     createdAt: "2024-03-12T09:45:00Z",
     likes: 2,
+    isPinned: false,
     replies: [],
+    comments: [],
   },
 ];
 
@@ -611,32 +772,59 @@ export const mockPaymentRequests: PaymentRequest[] = [
   {
     id: "req-001",
     userId: "user-001",
+    requesterId: "user-001",
     userName: "Rahim Ahmed",
     amount: 8000,
     description: "Room Rent - April 2024",
     dueDate: "2024-04-05",
     isPaid: false,
+    status: PaymentRequestStatus.PENDING,
+    paymentMethod: PaymentMethod.BKASH,
+    transactionReference: "BKS789456123",
     createdAt: "2024-03-25T10:00:00Z",
   },
   {
     id: "req-002",
     userId: "user-002",
+    requesterId: "user-002",
     userName: "Karim Hassan",
     amount: 8000,
     description: "Room Rent - April 2024",
     dueDate: "2024-04-05",
     isPaid: false,
+    status: PaymentRequestStatus.APPROVED,
+    paymentMethod: PaymentMethod.UPI,
+    transactionReference: "UPI456789123",
+    adminNotes: "Payment verified",
     createdAt: "2024-03-25T10:00:00Z",
   },
   {
     id: "req-003",
     userId: "user-004",
+    requesterId: "user-004",
     userName: "Abdul Jabbar",
     amount: 6000,
     description: "Room Rent - April 2024",
     dueDate: "2024-04-05",
     isPaid: false,
+    status: PaymentRequestStatus.REJECTED,
+    paymentMethod: PaymentMethod.BANK_TRANSFER,
+    transactionReference: "BANK123456",
+    adminNotes: "Transaction reference not found",
     createdAt: "2024-03-25T10:00:00Z",
+  },
+  {
+    id: "req-004",
+    userId: "user-005",
+    requesterId: "user-005",
+    userName: "Nusrat Jahan",
+    amount: 5000,
+    description: "Room Rent - April 2024",
+    dueDate: "2024-04-05",
+    isPaid: false,
+    status: PaymentRequestStatus.PENDING,
+    paymentMethod: PaymentMethod.CASH,
+    createdAt: "2024-03-26T14:00:00Z",
   },
 ];
 
@@ -656,8 +844,30 @@ export const adminDashboardStats = {
     .reduce((sum, t) => sum + t.amount, 0),
 };
 
+// Mock Dashboard Stats for Financials
+export const mockDashboardStats: DashboardStats = {
+  totalRevenue: mockTransactions
+    .filter((t) => t.type === TransactionType.CREDIT)
+    .reduce((sum, t) => sum + t.amount, 0),
+  pendingRent: mockRentHistory
+    .filter((r) => r.status === RentStatus.PENDING)
+    .reduce((sum, r) => sum + r.amount, 0),
+  overdueAmount: mockRentHistory
+    .filter((r) => r.status === RentStatus.OVERDUE)
+    .reduce((sum, r) => sum + r.amount, 0),
+  totalUsers: mockUsers.filter((u) => u.role === UserRole.TENANT).length,
+  verifiedUsers: mockUsers.filter((u) => u.role === UserRole.TENANT && u.isVerified).length,
+  totalRooms: mockRooms.length,
+  occupiedRooms: mockRooms.filter((r) => r.status === RoomStatus.OCCUPIED).length,
+  availableRooms: mockRooms.filter((r) => r.status === RoomStatus.AVAILABLE).length,
+  pendingComplaints: mockComplaints.filter((c) => c.status === ComplaintStatus.PENDING).length,
+  totalExpenses: mockTransactions
+    .filter((t) => t.type === TransactionType.DEBIT)
+    .reduce((sum, t) => sum + t.amount, 0),
+};
+
 // Helper function to get current day's menu
-export function getTodayMenu(): DailyMenu[] {
+export function getTodayMenu(): (DailyMenu & { meals: Meal[] })[] {
   const days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
   const today = days[new Date().getDay()] as DayOfWeek;
   return mockDailyMenus.filter((menu) => menu.dayOfWeek === today);

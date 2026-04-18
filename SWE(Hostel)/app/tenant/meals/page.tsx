@@ -16,17 +16,14 @@ import {
   Calendar,
   Ticket,
   CheckCircle2,
-  XCircle,
   Clock,
   Soup,
   Salad
 } from "lucide-react"
-import { mockUsers, mockDailyMenus, mockMealTokens } from "@/lib/mock-data"
+import { currentUser, mockDailyMenus, mockMealTokens } from "@/lib/mock-data"
 import { formatDate } from "@/lib/utils"
 import { MealType, DayOfWeek } from "@/lib/types"
 
-// Current tenant (mock - would come from auth)
-const currentUser = mockUsers.find(u => u.id === "user-1")!
 const userMealTokens = mockMealTokens.filter(t => t.userId === currentUser.id)
 
 const getMealIcon = (type: MealType) => {

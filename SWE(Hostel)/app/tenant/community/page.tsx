@@ -21,15 +21,12 @@ import {
   XCircle,
   Send,
   MessageCircle,
-  Users,
   Megaphone
 } from "lucide-react"
-import { mockUsers, mockComplaints, mockDiscussionPosts } from "@/lib/mock-data"
+import { currentUser, mockComplaints, mockDiscussionPosts, mockUsers } from "@/lib/mock-data"
 import { formatDate } from "@/lib/utils"
 import { ComplaintStatus } from "@/lib/types"
 
-// Current tenant (mock - would come from auth)
-const currentUser = mockUsers.find(u => u.id === "user-1")!
 const userComplaints = mockComplaints.filter(c => c.userId === currentUser.id)
 
 const complaintCategories = [

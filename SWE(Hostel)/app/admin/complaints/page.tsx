@@ -18,8 +18,7 @@ import {
   XCircle,
   MessageCircle,
   Eye,
-  Send,
-  Filter
+  Send
 } from "lucide-react"
 import { mockComplaints, mockUsers } from "@/lib/mock-data"
 import { formatDate } from "@/lib/utils"

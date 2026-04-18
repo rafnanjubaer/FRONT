@@ -23,12 +23,10 @@ import {
   Download,
   Receipt
 } from "lucide-react"
-import { mockUsers, mockRooms, mockRoomAllocations, mockRentHistory } from "@/lib/mock-data"
+import { currentUser, mockRooms, mockRoomAllocations, mockRentHistory } from "@/lib/mock-data"
 import { formatCurrency, formatDate } from "@/lib/utils"
 import { RentStatus } from "@/lib/types"
 
-// Current tenant (mock - would come from auth)
-const currentUser = mockUsers.find(u => u.id === "user-1")!
 const currentAllocation = mockRoomAllocations.find(a => a.userId === currentUser.id && a.isActive)
 const currentRoom = currentAllocation ? mockRooms.find(r => r.id === currentAllocation.roomId) : null
 const userRentHistory = mockRentHistory.filter(r => r.userId === currentUser.id)

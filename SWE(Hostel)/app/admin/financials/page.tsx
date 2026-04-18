@@ -9,7 +9,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { 
-  DollarSign, 
   TrendingUp, 
   TrendingDown,
   Search,
@@ -34,10 +33,6 @@ export default function FinancialsPage() {
   const [statusFilter, setStatusFilter] = useState<string>("all")
 
   const stats = mockDashboardStats
-
-  const totalRevenue = mockTransactions
-    .filter(t => t.type === TransactionType.CREDIT)
-    .reduce((sum, t) => sum + t.amount, 0)
 
   const pendingPayments = mockPaymentRequests
     .filter(p => p.status === PaymentRequestStatus.PENDING)
@@ -179,7 +174,7 @@ export default function FinancialsPage() {
                     return (
                       <TableRow key={transaction.id}>
                         <TableCell>{formatDate(transaction.createdAt)}</TableCell>
-                        <TableCell className="font-medium">{user?.name}</TableCell>
+                        <TableCell className="font-medium">{user?.name || transaction.userName}</TableCell>
                         <TableCell>{transaction.description}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
@@ -262,7 +257,7 @@ export default function FinancialsPage() {
                     return (
                       <TableRow key={request.id}>
                         <TableCell>{formatDate(request.createdAt)}</TableCell>
-                        <TableCell className="font-medium">{user?.name}</TableCell>
+                        <TableCell className="font-medium">{user?.name || request.userName}</TableCell>
                         <TableCell className="font-medium">{formatCurrency(request.amount)}</TableCell>
                         <TableCell className="capitalize">{request.paymentMethod.toLowerCase().replace("_", " ")}</TableCell>
                         <TableCell className="font-mono text-sm">{request.transactionReference || "-"}</TableCell>
